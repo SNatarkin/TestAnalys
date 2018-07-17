@@ -2,17 +2,24 @@ package com.example.testsystem.model;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Variant extends AbstractPersistable<Integer> {
+@Table(name = "variants")
+public class Variant implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String text;
-    private boolean isTrue;
+    private Boolean isTrue;
+
     @ManyToOne
-    @NotNull
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
+
+    public Variant() {
+    }
 
     public Variant(String text, boolean isTrue, Question question) {
         this.text = text;
@@ -20,7 +27,8 @@ public class Variant extends AbstractPersistable<Integer> {
         this.question = question;
     }
 
-    public Variant() {
+    public Integer getId() {
+        return id;
     }
 
     public String getText() {
@@ -31,11 +39,19 @@ public class Variant extends AbstractPersistable<Integer> {
         this.text = text;
     }
 
-    public Boolean getTrue() {
+    public boolean isTrue() {
         return isTrue;
     }
 
-    public void setTrue(Boolean aTrue) {
+    public void setTrue(boolean aTrue) {
         isTrue = aTrue;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }

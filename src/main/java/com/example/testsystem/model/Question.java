@@ -1,26 +1,30 @@
 package com.example.testsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
 
 @Entity
-public class Question extends AbstractPersistable<Integer> {
+@Table(name = "questions")
+public class Question implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private String text;
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Variant> variants = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Variant> variants = new HashSet<>();
-
-    @ManyToOne
-    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "part_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Part part;
-
 
     public Question() {
     }
@@ -30,17 +34,8 @@ public class Question extends AbstractPersistable<Integer> {
         this.part = part;
     }
 
-    public void addVariant(Variant variant) {
-        if (variant == null) throw new NullPointerException("Variant is null");
-        variants.add(variant);
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public Integer getId() {
+        return id;
     }
 
     public Part getPart() {
@@ -51,7 +46,36 @@ public class Question extends AbstractPersistable<Integer> {
         this.part = part;
     }
 
-    public Set<Variant> getVariants() {
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public List<Variant> getVariants() {
         return variants;
+    }
+
+    public void setVariants(List<Variant> variants) {
+        this.variants = variants;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return Objects.equals(id, question.id) &&
+                Objects.equals(text, question.text) &&
+                Objects.equals(variants, question.variants) &&
+                Objects.equals(part, question.part);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, text, variants, part);
     }
 }
