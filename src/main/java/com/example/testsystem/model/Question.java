@@ -3,7 +3,6 @@ package com.example.testsystem.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,11 +16,9 @@ public class Question implements Serializable {
     private Integer id;
 
     private String text;
-    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Variant> variants = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "part_id")
+    @JoinColumn(name = "part_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Part part;
@@ -54,13 +51,6 @@ public class Question implements Serializable {
         this.text = text;
     }
 
-    public List<Variant> getVariants() {
-        return variants;
-    }
-
-    public void setVariants(List<Variant> variants) {
-        this.variants = variants;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -69,13 +59,12 @@ public class Question implements Serializable {
         Question question = (Question) o;
         return Objects.equals(id, question.id) &&
                 Objects.equals(text, question.text) &&
-                Objects.equals(variants, question.variants) &&
                 Objects.equals(part, question.part);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, text, variants, part);
+        return Objects.hash(id, text, part);
     }
 }
