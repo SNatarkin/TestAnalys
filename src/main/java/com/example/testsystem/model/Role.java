@@ -1,5 +1,5 @@
 package com.example.testsystem.model;
 
-public enum  UserType {
-    USER, ADMIN
+public enum Role {
+    ADMIN, USER
 }
