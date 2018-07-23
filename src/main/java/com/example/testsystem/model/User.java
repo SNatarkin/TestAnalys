@@ -17,6 +17,34 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private State state;
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getHashPassword() {
+        return hashPassword;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public State getState() {
+        return state;
+    }
+
     public static UserBuilder builder() {
         return new UserBuilder();
     }

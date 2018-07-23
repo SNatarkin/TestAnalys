@@ -5,7 +5,7 @@ import com.example.testsystem.model.Variant;
 import com.example.testsystem.repository.PartRepository;
 import com.example.testsystem.repository.QuestionRepository;
 import com.example.testsystem.repository.VariantRepository;
-import com.example.testsystem.transferObject.QuestionWithVariants;
+import com.example.testsystem.transfer.QuestionWithVariants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

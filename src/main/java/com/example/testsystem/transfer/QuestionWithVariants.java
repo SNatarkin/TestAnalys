@@ -1,4 +1,4 @@
-package com.example.testsystem.transferObject;
+package com.example.testsystem.transfer;
 
 import com.example.testsystem.model.Question;
 import com.example.testsystem.model.Variant;
